@@ -18,6 +18,8 @@ import { NATS_SERVICE, PRODUCT_SERVICE } from 'src/config';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @ApiTags('Products')
 @Controller('products')
@@ -26,6 +28,7 @@ export class ProductsController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy,
   ) {}
 
+  @UseGuards( AuthGuard )
   @Post()
   createProduct(@Body() createProductDto: CreateProductDto) {
     return this.client.send(
@@ -34,6 +37,7 @@ export class ProductsController {
     );
   }
 
+  @UseGuards( AuthGuard )
   @Get()
   findAllProducts(@Query() paginationDto: PaginationDto) {
     return this.client.send(
@@ -42,6 +46,7 @@ export class ProductsController {
     );
   }
 
+  @UseGuards( AuthGuard )
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.client.send({ cmd: 'find-one-product' }, { id }).pipe(
@@ -62,6 +67,7 @@ export class ProductsController {
     // }
   }
 
+  @UseGuards( AuthGuard )
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
     return this.client.send({ cmd: 'delete-product' }, { id }).pipe(
@@ -71,6 +77,7 @@ export class ProductsController {
     );
   }
 
+  @UseGuards( AuthGuard )
   @Patch(':id')
   patchProduct(
     @Param('id', ParseIntPipe) id: number,
