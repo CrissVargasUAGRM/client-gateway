@@ -18,3 +18,9 @@ docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats
 ```
 docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats
 ```
+```
+CLIENT GATEWAY
+Los microservicios se conectan por NATS, las enviroments PRODUCTS_MICROSERVICE_HOST, PRODUCTS_MICROSERVICE_PORT, ORDERS_MICROSERVICE_HOST, ORDERS_MICROSERVICE_PORT,
+AUTH_MICROSERVICE_HOST, AUTH_MICROSERVICE_PORT ya no tienen uso porque se usaban para una comunicacion por TCP.
+
+```
