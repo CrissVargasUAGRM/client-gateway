@@ -15,13 +15,13 @@ export class OrdersController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy,
   ) {}
 
-  //@UseGuards( AuthGuard )
+  @UseGuards( AuthGuard )
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.client.send('createOrder', createOrderDto);
   }
 
-  //@UseGuards( AuthGuard )
+  @UseGuards( AuthGuard )
   @Get()
   async findAll( @Query() orderPaginationDto: OrderPaginationDto ) {
     try {
@@ -35,7 +35,7 @@ export class OrdersController {
     }
   }
   
-  //@UseGuards( AuthGuard )
+  @UseGuards( AuthGuard )
   @Get('id/:id')
   async findOne(@Param('id', ParseUUIDPipe ) id: string) {
     try {
@@ -50,7 +50,7 @@ export class OrdersController {
     }
   }
 
-  //@UseGuards( AuthGuard )
+  @UseGuards( AuthGuard )
   @Get(':status')
   async findAllByStatus(
     @Param() statusDto: StatusDto,
@@ -69,7 +69,7 @@ export class OrdersController {
   }
 
 
-  //@UseGuards( AuthGuard )
+  @UseGuards( AuthGuard )
   @Patch(':id')
   changeStatus(
     @Param('id', ParseUUIDPipe ) id: string,
