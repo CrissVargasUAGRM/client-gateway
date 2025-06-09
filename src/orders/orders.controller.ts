@@ -7,7 +7,10 @@ import { CreateOrderDto, OrderPaginationDto, StatusDto } from './dto';
 import { firstValueFrom } from 'rxjs';
 import { PaginationDto } from 'src/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Orders')
+@ApiBearerAuth()
 @Controller('orders')
 export class OrdersController {
 
@@ -16,12 +19,16 @@ export class OrdersController {
   ) {}
 
   @UseGuards( AuthGuard )
+  @ApiOperation({ summary: 'Create a new order' })
+  @ApiResponse({ status: 201, description: 'The order has been successfully created.' })
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.client.send('createOrder', createOrderDto);
   }
 
   @UseGuards( AuthGuard )
+  @ApiOperation({ summary: 'Get all orders with pagination' })
+  @ApiResponse({ status: 200, description: 'List of orders' })
   @Get()
   async findAll( @Query() orderPaginationDto: OrderPaginationDto ) {
     try {
@@ -36,6 +43,8 @@ export class OrdersController {
   }
   
   @UseGuards( AuthGuard )
+  @ApiOperation({ summary: 'Get an order by ID' })
+  @ApiResponse({ status: 200, description: 'Order details' })
   @Get('id/:id')
   async findOne(@Param('id', ParseUUIDPipe ) id: string) {
     try {
@@ -51,6 +60,8 @@ export class OrdersController {
   }
 
   @UseGuards( AuthGuard )
+  @ApiOperation({ summary: 'Get all orders by status' })
+  @ApiResponse({ status: 200, description: 'List of orders by status' })
   @Get(':status')
   async findAllByStatus(
     @Param() statusDto: StatusDto,
@@ -70,6 +81,8 @@ export class OrdersController {
 
 
   @UseGuards( AuthGuard )
+  @ApiOperation({ summary: 'Change the status of an order' })
+  @ApiResponse({ status: 200, description: 'Order status changed successfully' })
   @Patch(':id')
   changeStatus(
     @Param('id', ParseUUIDPipe ) id: string,
